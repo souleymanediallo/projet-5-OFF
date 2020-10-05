@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import json
 import requests
 import mysql.connector
@@ -12,14 +14,13 @@ class Mainproject:
         r_cat = requests.get('https://fr.openfoodfacts.org/categories&json=1')
         data_json = r_cat.json()
         data_tags = data_json.get('tags')
-        data_cat = [data_tags.get('name')]
+        data_cat = [data.get('name') for data in data_tags]
 
     def save_category(self):
-        r_cat = requests.get(
-            'https://fr.openfoodfacts.org/categories&json=1')
+        r_cat = requests.get('https://fr.openfoodfacts.org/categories&json=1')
         data_json = r_cat.json()
         data_tags = data_json.get('tags')
-        data_cat = [data_tags.get('name') for d in data_tags]
+        data_cat = [data.get('name') for data in data_tags]
         self.db.save_category(data_cat)
 
     def read(self):
@@ -33,4 +34,4 @@ class Mainproject:
 
 
 c = Mainproject()
-c.test()
+c.save_category()
