@@ -7,7 +7,12 @@ class DbOpenFoodFacts:
 
     def __init__(self):
         self.db = mysql.connector.connect(
-            host='localhost', user='root', passwd='rootroot', database="BasededonneeOFF")
+            host='localhost',
+            user='root',
+            passwd='rootroot',
+            auth_plugin='mysql_native_password',
+            database='BasededonneeOFF',
+            charset='utf8')
         self.cursor = self.db.cursor()
 
     def save_category(self, lst_category):
