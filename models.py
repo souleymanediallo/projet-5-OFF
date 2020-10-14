@@ -28,13 +28,3 @@ class DbOpenFoodFacts:
         self.cursor.execute("SELECT * FROM Category")
         result = self.cursor.fetchall()
         return result
-
-    # def update_category(self, old_name, new_name):
-    #     my_sql = "UPDATE Category SET name = 'new_name' WHERE name = old_name"
-    #     self.cursor.execute(my_sql)
-    #     self.db.commit()
-
-    # def delete_category(self):
-    #     my_sql = "DELETE FROM Category WHERE categoryId = 3000"
-    #     self.cursor.execute(my_sql)
-    #     self.db.commit()

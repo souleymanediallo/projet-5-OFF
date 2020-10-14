@@ -3,11 +3,11 @@
 import json
 import requests
 import mysql.connector
-from db_off import DbOpenFoodFacts
-from view import View
+from models import DbOpenFoodFacts
+from views import View
 
 
-class Mainproject:
+class Controller:
     def __init__(self):
         self.db = DbOpenFoodFacts()
         self.view = View()
@@ -28,12 +28,6 @@ class Mainproject:
     def read(self):
         data = self.db.read_category()
         self.view.display_category(data)
-
-    # def updated(self):
-    #     self.db.update_category()
-
-    # def deleted(self):
-    #     self.db.delete_category()
 
     def get_product(self):
         self.keys = [
@@ -63,13 +57,11 @@ class Mainproject:
         for data in data_tags:
             print(data.get('product_name'))
             print(data.get('categories'))
-        #print(data_products)
+        # print(data_products)
 
 
-c = Mainproject()
-# c.save_category()
-# c.updated()
-# c.deleted()
+c = Controller()
+
 print("impression produit")
 print(c.get_product())
 
