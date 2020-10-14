@@ -30,15 +30,6 @@ class Controller:
         self.view.display_category(data)
 
     def get_product(self):
-        self.keys = [
-            "id",
-            "product_name",
-            "categories",
-            "nutrition_grades",
-            "ingredients_text",
-            "product_url"
-        ]
-
         load_data = {
             'action': 'process',
             'tagtype_0': 'categories',
@@ -53,10 +44,19 @@ class Controller:
             'https://fr.openfoodfacts.org/cgi/search.pl', params=load_data)
         data_json = r_product.json()
         data_tags = data_json.get('products')
-        # data_products = [data.get("ingredients_text") for data in data_tags]
+
+        lst_data = []
         for data in data_tags:
-            print(data.get('product_name'))
-            print(data.get('categories'))
+            new_data = (data.get('product_name'), data.get(
+                'categories'), data.get('nutritions_grades'), data.get('ingredients_text', data.get('product_url')))
+            lst_data.append(new_data)
+            print(f"{lst_data}  | ")
+
+        # data_products = [data.get("ingredients_text") for data in data_tags]
+
+        # for data in data_tags:
+        #     print(data.get('product_name'))
+            # print(data.get('categories'))
         # print(data_products)
 
 
