@@ -4,6 +4,7 @@ import mysql.connector
 
 class DbOpenFoodFacts:
     CATEGORY_SIZE = 11
+    PRODUCT_SIZE = 51
 
     def __init__(self):
         self.db = mysql.connector.connect(

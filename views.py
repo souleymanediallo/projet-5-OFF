@@ -1,4 +1,3 @@
-
 class View:
     def display_category(self, data):
         print("-----------------------------------------------")

@@ -48,21 +48,36 @@ class Controller:
         lst_data = []
         for data in data_tags:
             new_data = (data.get('product_name'), data.get(
-                'categories'), data.get('nutritions_grades'), data.get('ingredients_text', data.get('product_url')))
+                'nutrition_grades'), data.get('ingredients_text'), data.get('nova_groups_tags'), data.get('ingredients'), data.get('product_url'), data.get('magasin'))
             lst_data.append(new_data)
             print(f"{lst_data}  | ")
 
-        # data_products = [data.get("ingredients_text") for data in data_tags]
+    def save_product(self, id_category):
+        load_data = {
+            'action': 'process',
+            'tagtype_0': 'categories',
+            'tag_contains_0': 'contains',
+            'sort_by': 'unique_scans_n',
+            'countries': 'France',
+            'json': 1,
+            'page': 1
+        }
 
-        # for data in data_tags:
-        #     print(data.get('product_name'))
-            # print(data.get('categories'))
-        # print(data_products)
+        r_product = requests.get(
+            'https://fr.openfoodfacts.org/cgi/search.pl', params=load_data)
+        data_json = r_product.json()
+        data_tags = data_json.get('products')
+
+        lst_product = []
+        for data in data_tags:
+            new_product = (data.get('product_name'), data.get(
+                'nutrition_grades'), data.get('ingredients_text'), data.get('nova_groups_tags'), data.get('ingredients'), data.get('product_url'), data.get('magasin'))
+            lst_product.append(new_product[0])
+        self.db.save_product(lst_product)
 
 
 c = Controller()
 
 print("impression produit")
-print(c.get_product())
-
+# print(c.get_product())
 # print(c.read())
