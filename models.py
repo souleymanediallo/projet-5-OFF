@@ -18,14 +18,53 @@ class DbOpenFoodFacts:
 
     def save_category(self, lst_category):
         for i in range(1, self.CATEGORY_SIZE):
-            print("-------")
+            
             add_category = (
                 "INSERT INTO Category (name) VALUES (%s)")
-            print(add_category)
+    
             self.cursor.execute(add_category, (lst_category[i],))
             self.db.commit()
 
-    def read_category(self):
-        self.cursor.execute("SELECT * FROM Category")
-        result = self.cursor.fetchall()
-        return result
+    def save_p(self, lst_product):
+        
+        add_product = ("INSERT INTO Product (product_name, nutrition_grades, ingredients_text, nova_groups_tags, ingredients, product_url, magasin) VALUES (%s, %s, %s, %s, %s, %s, %s)")
+            # print(lst_product[i])
+            # print(lst_product[i][0])
+            # print(lst_product[i][1])
+            # print(lst_product[i][2])
+            # print(lst_product[i][3])
+            # print(lst_product[i][4])
+            # print(lst_product[i][5])
+            # print(lst_product[i][6])
+        self.cursor.execute(add_product, (lst_product[0], "g","d", "t", "q","c","s"))
+        self.db.commit()
+
+    def save_product_category(self, categoryId, productId):
+        project_data = (categoryId, productId)
+        self.cursor.execute("INSERT INTO Product_has_Category(categoryId, productId) VALUES (%s, %s)", project_data)
+        
+        project_id = self.cursor.lastrowid
+        
+        lst_p = []
+        for i in productId:
+            l_p = (categoryId, productId)
+            lst_p.append(l_p)
+        
+        self.cursor.executemany("INSERT INTO Product_has_Category(categoryId, productId) VALUES (%s, %s)", lst_p)
+
+    def get_category_id_name(self):
+        add_product = ("SELECT * FROM Category")
+        self.cursor.execute(add_product)
+        return self.cursor.fetchall()
+
+    
+
+
+    # def read_category(self):
+    #     self.cursor.execute("SELECT * FROM Category")
+    #     result = self.cursor.fetchall()
+    #     return result
+
+    # def clear(self):
+    #     self.cursor.execute("DROP TABLE Category, Product, Product_has_Category, Substitue")
+
