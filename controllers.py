@@ -58,11 +58,8 @@ class Controller:
                 data.get('magasin'),
             )
             lst_data.append(new_data)
-            #for row in lst_data:
-                #print(row[0])
-            #print(f"{lst_data}  | ")
 
-    def save_product(self, id_category, name):
+    def save_product(self, categoryId, name):
         load_data = {
             'action': 'process',
             'tagtype_0': 'categories',
@@ -73,7 +70,7 @@ class Controller:
             'page': 1,
             'tag_0': name,
         }
-    
+
         r_product = requests.get(
             'https://fr.openfoodfacts.org/cgi/search.pl', params=load_data)
 
@@ -81,7 +78,7 @@ class Controller:
         data_tags = data_json.get('products')
 
         lst_product = []
-        for data in data_tags:
+        for data in data_tags[:50]:
             new_product = (
                 data.get('product_name'),
                 data.get('nutrition_grades'),
@@ -92,15 +89,18 @@ class Controller:
                 data.get('magasin'),
             )
             lst_product.append(new_product)
-            idproduct = self.db.save_p(new_product) # créer la méthode # sauvegarger un produit et retour id
-            self.db.save_product_category(idproduct, id_category) # sauvegarder
+            # créer la méthode # sauvegarger un produit et retour id
+            self.db.save_p(new_product)
+            productId = self.db.get_product(new_product[0])
+            print(productId, categoryId)
+            self.db.save_product_category(categoryId, productId)  # sauvegarder
 
         # self.db.save_product(lst_product) Pas besoin
 
     def process(self):
         self.save_category()
         list_tuple = self.db.get_category_id_name()
-         # récuper id et nom produit
+        # récuper id et nom produit
         for id, name in list_tuple:
             self.save_product(id, name)
 

@@ -36,26 +36,25 @@ class DbOpenFoodFacts:
             # print(lst_product[i][4])
             # print(lst_product[i][5])
             # print(lst_product[i][6])
-        self.cursor.execute(add_product, (lst_product[0], "g","d", "t", "q","c","s"))
+        self.cursor.execute(add_product, (lst_product[0], "o", "d", "t", "q","c","s"))
         self.db.commit()
 
     def save_product_category(self, categoryId, productId):
         project_data = (categoryId, productId)
         self.cursor.execute("INSERT INTO Product_has_Category(categoryId, productId) VALUES (%s, %s)", project_data)
         
-        project_id = self.cursor.lastrowid
-        
-        lst_p = []
-        for i in productId:
-            l_p = (categoryId, productId)
-            lst_p.append(l_p)
-        
-        self.cursor.executemany("INSERT INTO Product_has_Category(categoryId, productId) VALUES (%s, %s)", lst_p)
-
     def get_category_id_name(self):
         add_product = ("SELECT * FROM Category")
         self.cursor.execute(add_product)
         return self.cursor.fetchall()
+
+    def get_product(self, name):
+        print(name)
+        self.cursor.execute("SELECT * FROM Product WHERE product_name = (%s)", (name,))
+        id_product = self.cursor.fetchall()[0][0]
+        return id_product
+
+
 
     
 
