@@ -1,18 +1,19 @@
 # coding: utf-8
-
 import json
 import requests
 import mysql.connector
+
 from models import DbOpenFoodFacts
 from views import View
 
 
-class Controller:
+class App:
     def __init__(self):
         self.db = DbOpenFoodFacts()
         self.view = View()
 
     def get_category(self):
+        """Get url for data API"""
         r_cat = requests.get('https://fr.openfoodfacts.org/categories&json=1')
         data_json = r_cat.json()
         data_tags = data_json.get('tags')
@@ -95,8 +96,6 @@ class Controller:
             print(productId, categoryId)
             self.db.save_product_category(categoryId, productId)  # sauvegarder
 
-        # self.db.save_product(lst_product) Pas besoin
-
     def process(self):
         self.save_category()
         list_tuple = self.db.get_category_id_name()
@@ -104,8 +103,24 @@ class Controller:
         for id, name in list_tuple:
             self.save_product(id, name)
 
+    def scenario(self):
+        value = self.view.intro()
+        if value == 1:
+            cat_id = self.view.choose_category(self.db.get_category_id_name())
+            prod_id = self.view.choose_product(self.db.get_product_by_category(cat_id[0]))
+
+        if value == 2:
+            lst = self.db.get_category_id_name()
+            self.view.substitue(lst)
+
+
+def main():
+    c = App()
+    #c.get_product()
+    #c.process()
+    c.scenario()
+
 
 if __name__ == "__main__":
-    c = Controller()
-    c.get_product()
-    c.process()
+    
+    main()
