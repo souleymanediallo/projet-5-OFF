@@ -1,7 +1,5 @@
-# coding: utf-8
 import json
 import requests
-import mysql.connector
 
 from models import DbOpenFoodFacts
 from views import View
@@ -41,8 +39,7 @@ class App:
             'page': 1
         }
 
-        r_product = requests.get(
-            'https://fr.openfoodfacts.org/cgi/search.pl', params=load_data)
+        r_product = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params=load_data)
         data_json = r_product.json()
         data_tags = data_json.get('products')
 
@@ -72,9 +69,7 @@ class App:
             'tag_0': name,
         }
 
-        r_product = requests.get(
-            'https://fr.openfoodfacts.org/cgi/search.pl', params=load_data)
-
+        r_product = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params=load_data)
         data_json = r_product.json()
         data_tags = data_json.get('products')
 
@@ -103,16 +98,22 @@ class App:
         for id, name in list_tuple:
             self.save_product(id, name)
 
+# TODO : RECUPERER LE NOM DE LA CATEGORIE AU LIEU DE L'ID LIGNE 106
+
     def scenario(self):
         value = self.view.intro()
         if value == 1:
             cat_id = self.view.choose_category(self.db.get_category_id_name())
             prod_id = self.view.choose_product(self.db.get_product_by_category(cat_id[0]))
+            self.view.product_views(self.db.get_product())
 
         if value == 2:
             lst = self.db.get_category_id_name()
             self.view.substitue(lst)
 
+# TODO : VÉRIFIFER L'AFFICHAGE get_product_by_category RECUPERR LE RETOUR DE LUTILISATEUR ET SAUVEGARDE EN BASE
+# TODO : METHODE ET RETOUR DE METHODE POUR SAUVEGARDER LE PRODUIT
+# TODO : CRÉER UNE METHODE DANS APP ET DANS MODELS POUR SAUVEGARDER LE CHOIX DE L'UTILISATEUR
 
 def main():
     c = App()
@@ -122,5 +123,4 @@ def main():
 
 
 if __name__ == "__main__":
-    
     main()

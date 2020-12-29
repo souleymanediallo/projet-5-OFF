@@ -27,10 +27,8 @@ class View:
                 print(product[p])
 
             prod = (int(input("Selectionner le produit \n")),)
-            if prod not in range(1, 11):
-                raise ValueError
         except ValueError:
-            print("La valeur choisie n'esst pas la bonne")
+            print("La valeur choisie n'est pas la bonne")
             return self.choose_product()
         return prod
 
