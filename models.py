@@ -48,7 +48,6 @@ class DbOpenFoodFacts:
         return lst
 
     def get_product_by_category(self, category_id):
-        print(category_id)
         self.cursor.execute("SELECT ProductId FROM Product_has_Category WHERE categoryId = (%s)", (category_id,))
         lst = self.cursor.fetchall()[:10]
         ret = []  

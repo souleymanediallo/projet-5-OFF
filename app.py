@@ -102,10 +102,13 @@ class App:
 
     def scenario(self):
         value = self.view.intro()
+
         if value == 1:
-            cat_id = self.view.choose_category(self.db.get_category_id_name())
-            prod_id = self.view.choose_product(self.db.get_product_by_category(cat_id[0]))
-            self.view.product_views(self.db.get_product())
+            cat_id, cat_name = self.view.choose_category(self.db.get_category_id_name())
+            print(cat_name)
+            prod_id = self.view.choose_product(self.db.get_product_by_category(cat_id))
+            print(prod_id)
+            # self.view.product_views(self.db.get_product())
 
         if value == 2:
             lst = self.db.get_category_id_name()
@@ -117,7 +120,7 @@ class App:
 
 def main():
     c = App()
-    #c.get_product()
+    # c.get_product()
     #c.process()
     c.scenario()
 
