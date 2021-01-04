@@ -73,20 +73,20 @@ class App:
         if value == 1:
             cat_id, cat_name = self.view.choose_category(self.db.get_category_id_name())
             print(cat_name)
-            prod_id = self.view.choose_product(self.db.get_product_by_category(cat_id))
-            print(prod_id)
+            prod = self.view.choose_product(self.db.get_product_by_category(cat_id))
+            print(prod)
             # self.view.product_views(self.db.get_product())
+            # self.db.save_product_substitut(str(prod[0]), prod[1])
+            self.db.save_product_substitut(prod[0], prod[0])
+            print("Votre produit a été sauvegarder dans substitut.")
 
         if value == 2:
             lst = self.db.get_category_id_name()
             self.view.substitue(lst)
 
-# TODO : VÉRIFIFER L'AFFICHAGE get_product_by_category RECUPERR LE RETOUR DE LUTILISATEUR ET SAUVEGARDE EN BASE
-# TODO : METHODE ET RETOUR DE METHODE POUR SAUVEGARDER LE PRODUIT
-# TODO : CRÉER UNE METHODE DANS APP ET DANS MODELS POUR SAUVEGARDER LE CHOIX DE L'UTILISATEUR
-
 def main():
     c = App()
+    # c.save_product(3153, "pizzas")
     # c.process()
     c.scenario()
 
@@ -94,6 +94,6 @@ def main():
 if __name__ == "__main__":
     main()
 
-# TODO_1 = RECUPERER LES URLS DES PRDUITS ET MAGASIN
+# TODO_1 = RECUPERER LES URLS DES PRODUITS ET DES MAGASINS
 # TODO_2 = FAIRE UNE CONDITION POUR NE REMPLIR DEUX FOIS LA BASE DE DONNÉES
 # TODO_3 = VERIFIER QUE LA SAUVEGARDER A ETE EFFECTUE EN DECOMMENTANT LA LIGNE DU SCENARIO

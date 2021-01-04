@@ -1,25 +1,37 @@
 class View:
     def choose_category(self, category):
+        print("--------------- LISTE DES CATEGORIES ----------------------")
         tmp_values = {}
         for index, cat_tuple in enumerate(category[:10]):
             tmp_index = index + 1
             tmp_values[tmp_index] = cat_tuple
             print(f"{tmp_index} - {cat_tuple[1]}")
         try:
-            choise = int(input("choisir le numéro de votre categorie : > "))
+            choice = int(input("choisir le numéro de votre categorie : > "))
         except Exception as e:
             pass
-        return tmp_values.get(choise)
+        return tmp_values.get(choice)
 
     def choose_product(self, product):
+        print("--------------- LISTE DES PRODUITS ----------------------")
+        for i, p in enumerate(product):
+            print(f"{i+1} - {p[1]} - {p[2]} - {p[3]}")
         try:
-            for p in range(len(product)):
-                print(product[p])
-            prod = (int(input("Choisir le numéro de votre produit : > ")),)
-        except ValueError:
+            choice = int(input("Choisir le numéro de votre produit : > "))
+            prod = product[choice - 1]
+        except (ValueError, IndexError):
             print("La valeur choisie n'est pas la bonne")
-            return self.choose_product()
+            return exit()
         return prod
+
+        # try:
+        #     for p in range(len(product)):
+        #         print(product[p])
+        #     prod = (int(input("Choisir le numéro de votre produit : > ")),)
+        # except ValueError:
+        #     print("La valeur choisie n'est pas la bonne")
+        #     return self.choose_product()
+        # return product[prod[0]]
 
     def intro(self):
         try:
@@ -41,25 +53,6 @@ class View:
 
     def product_views(self, product):
         print(product)
-
-    # def display_category(self, data):
-    #     print("-----------------------------------------------")
-    #     print("| ID | LIST CATEGORIES                        |")
-    #     print("-----------------------------------------------")
-    #     for row in data:
-    #         print(f"| {row[0]}    |   {row[1]}    |")
-    #         print("-----------------------------------------------")
-    #     print("-----------------------------------------------")
-
-    # def choose_category(self, category):
-    #     try:
-    #         for i in range(len(category)):
-    #             print(category[i])
-    #         cat = (int(input("Selectionner la categorie \n")),)
-    #     except ValueError:
-    #         print("La valeur choisie n'esst pas la bonne")
-    #         return self.choose_category(category)
-    #     return cat
 
 
 

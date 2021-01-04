@@ -65,4 +65,7 @@ class DbOpenFoodFacts:
         # self.cursor.executemany("SELECT * FROM Product WHERE ProductId = (%s)", (lst,))
         return ret
 
-
+    def save_product_substitut(self, productId, subsitute):
+        project_data = (productId, subsitute)
+        self.cursor.execute("INSERT INTO Substitute(productId, subsitute) VALUES (%s, %s);", project_data)
+        self.db.commit()
