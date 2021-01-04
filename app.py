@@ -1,21 +1,14 @@
-import json
 import requests
 
 from models import DbOpenFoodFacts
 from views import View
+from utils.constants import LOAD_DATA
 
 
 class App:
     def __init__(self):
         self.db = DbOpenFoodFacts()
         self.view = View()
-
-    def get_category(self):
-        """Get url for data API"""
-        r_cat = requests.get('https://fr.openfoodfacts.org/categories&json=1')
-        data_json = r_cat.json()
-        data_tags = data_json.get('tags')
-        data_cat = [data.get('name') for data in data_tags]
 
     def save_category(self):
         r_cat = requests.get('https://fr.openfoodfacts.org/categories&json=1')
@@ -28,36 +21,10 @@ class App:
         data = self.db.read_category()
         self.view.display_category(data)
 
-    def get_product(self):
-        load_data = {
-            'action': 'process',
-            'tagtype_0': 'categories',
-            'tag_contains_0': 'contains',
-            'sort_by': 'unique_scans_n',
-            'countries': 'France',
-            'json': 1,
-            'page': 1
-        }
-
-        r_product = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params=load_data)
-        data_json = r_product.json()
-        data_tags = data_json.get('products')
-
-        #print("Product Name \t\t\t Nutrition Grade \t\t\t\t Ingredients")
-        lst_data = []
-        for data in data_tags:
-            new_data = (
-                data.get('product_name'),
-                data.get('nutrition_grades'),
-                data.get('ingredients_text'),
-                data.get('nova_groups_tags'),
-                data.get('ingredients'),
-                data.get('product_url'),
-                data.get('magasin'),
-            )
-            lst_data.append(new_data)
-
     def save_product(self, categoryId, name):
+        """
+        Save a new product to OFF database.
+        """
         load_data = {
             'action': 'process',
             'tagtype_0': 'categories',
@@ -120,10 +87,13 @@ class App:
 
 def main():
     c = App()
-    # c.get_product()
-    #c.process()
+    # c.process()
     c.scenario()
 
 
 if __name__ == "__main__":
     main()
+
+# TODO_1 = RECUPERER LES URLS DES PRDUITS ET MAGASIN
+# TODO_2 = FAIRE UNE CONDITION POUR NE REMPLIR DEUX FOIS LA BASE DE DONNÉES
+# TODO_3 = VERIFIER QUE LA SAUVEGARDER A ETE EFFECTUE EN DECOMMENTANT LA LIGNE DU SCENARIO

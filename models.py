@@ -25,12 +25,19 @@ class DbOpenFoodFacts:
     def save_p(self, lst_product):
         add_product = ("INSERT INTO Product (product_name, nutrition_grades, ingredients_text, nova_groups_tags,"
                        " ingredients, product_url, magasin) VALUES (%s, %s, %s, %s, %s, %s, %s)")
-        self.cursor.execute(add_product, (lst_product[0], lst_product[1], "d", "t", "q", "c", "s"))
+
+        tuple_data = (lst_product[0], lst_product[1], lst_product[2][:50], "", "", lst_product[5],
+                      lst_product[6])
+        if isinstance(tuple_data, tuple):
+            print(tuple_data)
+
+        self.cursor.execute(add_product, tuple_data)
         self.db.commit()
 
     def save_product_category(self, categoryId, productId):
         project_data = (categoryId, productId)
-        self.cursor.execute("INSERT INTO Product_has_Category(categoryId, productId) VALUES (%s, %s)", project_data)
+        self.cursor.execute("INSERT INTO Product_has_Category(categoryId, productId) VALUES (%s, %s);", project_data)
+        self.db.commit()
 
     def get_category_id_name(self):
         add_product = ("SELECT * FROM Category")
@@ -48,16 +55,14 @@ class DbOpenFoodFacts:
         return lst
 
     def get_product_by_category(self, category_id):
-        self.cursor.execute("SELECT ProductId FROM Product_has_Category WHERE categoryId = (%s)", (category_id,))
-        lst = self.cursor.fetchall()[:10]
-        ret = []  
+        self.cursor.execute("SELECT ProductId FROM Product_has_Category WHERE categoryId = (%s);", (category_id,))
+        lst = list(self.cursor.fetchall()[:10])
+        ret = []
         for i in lst:
-            print(i)
-            self.cursor.executemany("SELECT * FROM product WHERE ProductId = (%s)", (i,))
+            self.cursor.execute("SELECT * FROM Product WHERE ProductId = (%s)", (i[0],))
             ret.append(self.cursor.fetchone())
-        print(ret)
+        # print(lst)
+        # self.cursor.executemany("SELECT * FROM Product WHERE ProductId = (%s)", (lst,))
         return ret
 
 
-m = DbOpenFoodFacts()
-m.get_product_by_category(13) 
