@@ -2,7 +2,6 @@ import requests
 
 from models import DbOpenFoodFacts
 from views import View
-from utils.constants import LOAD_DATA
 
 
 class App:
@@ -11,6 +10,9 @@ class App:
         self.view = View()
 
     def save_category(self):
+        """
+        Save a new catagory to OFF database.
+        """
         r_cat = requests.get('https://fr.openfoodfacts.org/categories&json=1')
         data_json = r_cat.json()
         data_tags = data_json.get('tags')
@@ -23,7 +25,7 @@ class App:
 
     def save_product(self, categoryId, name):
         """
-        Save a new product to OFF database.
+        Save a new product to OFF database with categoryId.
         """
         load_data = {
             'action': 'process',
@@ -46,26 +48,22 @@ class App:
                 data.get('product_name'),
                 data.get('nutrition_grades'),
                 data.get('ingredients_text'),
-                data.get('nova_groups_tags'),
-                data.get('ingredients'),
-                data.get('product_url'),
-                data.get('magasin'),
+                data.get('nova_group'),
+                data.get('image_url'),
+                data.get('stores'),
             )
             lst_product.append(new_product)
-            # créer la méthode # sauvegarger un produit et retour id
             self.db.save_p(new_product)
             productId = self.db.get_product(new_product[0])
             print(productId, categoryId)
-            self.db.save_product_category(categoryId, productId)  # sauvegarder
+            self.db.save_product_category(categoryId, productId)
 
     def process(self):
+        """Get CategoryId and name Product"""
         self.save_category()
         list_tuple = self.db.get_category_id_name()
-        # récuper id et nom produit
         for id, name in list_tuple:
             self.save_product(id, name)
-
-# TODO : RECUPERER LE NOM DE LA CATEGORIE AU LIEU DE L'ID LIGNE 106
 
     def scenario(self):
         value = self.view.intro()
@@ -75,8 +73,6 @@ class App:
             print(cat_name)
             prod = self.view.choose_product(self.db.get_product_by_category(cat_id))
             print(prod)
-            # self.view.product_views(self.db.get_product())
-            # self.db.save_product_substitut(str(prod[0]), prod[1])
             self.db.save_product_substitut(prod[0], prod[0])
             print("Votre produit a été sauvegarder dans substitut.")
 
@@ -86,7 +82,7 @@ class App:
 
 def main():
     c = App()
-    # c.save_product(3153, "pizzas")
+    #c.save_product(3153, "pizzas")
     # c.process()
     c.scenario()
 
@@ -94,6 +90,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-# TODO_1 = RECUPERER LES URLS DES PRODUITS ET DES MAGASINS
-# TODO_2 = FAIRE UNE CONDITION POUR NE REMPLIR DEUX FOIS LA BASE DE DONNÉES
-# TODO_3 = VERIFIER QUE LA SAUVEGARDER A ETE EFFECTUE EN DECOMMENTANT LA LIGNE DU SCENARIO

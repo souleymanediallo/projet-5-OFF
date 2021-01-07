@@ -24,15 +24,6 @@ class View:
             return exit()
         return prod
 
-        # try:
-        #     for p in range(len(product)):
-        #         print(product[p])
-        #     prod = (int(input("Choisir le numéro de votre produit : > ")),)
-        # except ValueError:
-        #     print("La valeur choisie n'est pas la bonne")
-        #     return self.choose_product()
-        # return product[prod[0]]
-
     def intro(self):
         try:
             request = int(input(

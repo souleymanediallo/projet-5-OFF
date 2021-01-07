@@ -23,11 +23,11 @@ class DbOpenFoodFacts:
             self.db.commit()
 
     def save_p(self, lst_product):
-        add_product = ("INSERT INTO Product (product_name, nutrition_grades, ingredients_text, nova_groups_tags,"
-                       " ingredients, product_url, magasin) VALUES (%s, %s, %s, %s, %s, %s, %s)")
+        add_product = ("INSERT INTO Product (product_name, nutrition_grades, ingredients_text, nova_group,"
+                       "image_url, stores) VALUES (%s, %s, %s, %s, %s, %s)")
 
-        tuple_data = (lst_product[0], lst_product[1], lst_product[2][:50], "", "", lst_product[5],
-                      lst_product[6])
+        tuple_data = (lst_product[0], lst_product[1], lst_product[2][:50], lst_product[3], lst_product[4], lst_product[5],
+                      )
         if isinstance(tuple_data, tuple):
             print(tuple_data)
 
@@ -61,8 +61,6 @@ class DbOpenFoodFacts:
         for i in lst:
             self.cursor.execute("SELECT * FROM Product WHERE ProductId = (%s)", (i[0],))
             ret.append(self.cursor.fetchone())
-        # print(lst)
-        # self.cursor.executemany("SELECT * FROM Product WHERE ProductId = (%s)", (lst,))
         return ret
 
     def save_product_substitut(self, productId, subsitute):
