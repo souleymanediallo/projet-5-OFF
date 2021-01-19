@@ -5,13 +5,16 @@ from views import View
 
 
 class App:
+    """
+    Represent Category table
+    """
     def __init__(self):
         self.db = DbOpenFoodFacts()
         self.view = View()
 
     def save_category(self):
         """
-        Save a new catagory to OFF database.
+        Save a new category to OFF database.
         """
         r_cat = requests.get('https://fr.openfoodfacts.org/categories&json=1')
         data_json = r_cat.json()
@@ -49,7 +52,7 @@ class App:
                 data.get('nutrition_grades'),
                 data.get('ingredients_text'),
                 data.get('nova_group'),
-                data.get('image_url'),
+                data.get('url'),
                 data.get('stores'),
             )
             lst_product.append(new_product)
@@ -65,6 +68,20 @@ class App:
         for id, name in list_tuple:
             self.save_product(id, name)
 
+    def import_db(self):
+        """import db in local by API OFF"""
+        choice = int(input("Que souhaitez-vous faire ? \n"
+                       "1 - Importer la base de donnée OFF  \n"
+                       "2 - Menu Principal \n"
+                       "3 - Quitter le programme \n"
+                       "Votre choix >  "))
+        if choice == 1:
+            self.process()
+        elif choice == 2:
+            pass
+        else:
+            return exit()
+
     def scenario(self):
         value = self.view.intro()
 
@@ -72,19 +89,30 @@ class App:
             cat_id, cat_name = self.view.choose_category(self.db.get_category_id_name())
             print(cat_name)
             prod = self.view.choose_product(self.db.get_product_by_category(cat_id))
-            print(prod)
-            self.db.save_product_substitut(prod[0], prod[0])
-            print("Votre produit a été sauvegarder dans substitut.")
 
-        if value == 2:
-            lst = self.db.get_category_id_name()
-            self.view.substitue(lst)
+            if self.view.save_product(prod):
+                self.db.save_product_substitut(prod[0], prod[0])
+                print("Votre produit a été sauvegarder dans substitut.")
+
+        elif value == 2:
+            lst = self.db.get_substitut()
+            f_lst = self.db.get_all_substitute(lst)
+            self.view.substitue(f_lst)
+
+        elif value == 3:
+            return exit(0)
+
+        else:
+            self.scenario()
+
 
 def main():
     c = App()
-    #c.save_product(3153, "pizzas")
+    c.import_db()
+    # c.save_product(3153, "pizzas")
     # c.process()
-    c.scenario()
+    while True:
+        c.scenario()
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ class DbOpenFoodFacts:
             user='root',
             passwd='rootroot',
             auth_plugin='mysql_native_password',
-            database='test_off_v1',
+            database='db_sql',
             charset='utf8')
         self.cursor = self.db.cursor()
 
@@ -24,9 +24,14 @@ class DbOpenFoodFacts:
 
     def save_p(self, lst_product):
         add_product = ("INSERT INTO Product (product_name, nutrition_grades, ingredients_text, nova_group,"
-                       "image_url, stores) VALUES (%s, %s, %s, %s, %s, %s)")
+                       "url, stores) VALUES (%s, %s, %s, %s, %s, %s)")
 
-        tuple_data = (lst_product[0], lst_product[1], lst_product[2][:50], lst_product[3], lst_product[4], lst_product[5],
+        tuple_data = (lst_product[0],
+                      lst_product[1],
+                      lst_product[2][:50],
+                      lst_product[3],
+                      lst_product[4],
+                      lst_product[5],
                       )
         if isinstance(tuple_data, tuple):
             print(tuple_data)
@@ -49,9 +54,9 @@ class DbOpenFoodFacts:
         id_product = self.cursor.fetchall()[0][0]
         return id_product
 
-    def get_substitut(self, name):
-        self.cursor.execute("SELECT * FROM Substitue")
-        lst = self.self.cursor.fetchall()
+    def get_substitut(self):
+        self.cursor.execute("SELECT * FROM Substitute")
+        lst = self.cursor.fetchall()
         return lst
 
     def get_product_by_category(self, category_id):
@@ -67,3 +72,19 @@ class DbOpenFoodFacts:
         project_data = (productId, subsitute)
         self.cursor.execute("INSERT INTO Substitute(productId, subsitute) VALUES (%s, %s);", project_data)
         self.db.commit()
+
+    def get_product_substitue(self, id):
+        self.cursor.execute("SELECT * FROM Product WHERE productId = (%s)", (id,))
+        substitute = self.cursor.fetchall()[0][1]
+        return substitute
+
+    def get_all_substitute(self, lst):
+        return [self.get_product_substitue(x[1]) for x in lst]
+
+
+
+# TODO 1 : Importer la base de donnée et faire la suite
+# TODO 2 : AFFICHER LA LISTE DES SUBSITUT
+# TODO 3 : REPOSER LA QUESTION AU CLIENT
+# TODO 4 : FLAKE8 (LIBRAIRIE PYTHON POUR LA VERIFICATION DE LA PEP8)
+# TODO 5 : DOCSTRING

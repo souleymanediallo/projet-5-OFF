@@ -1,4 +1,5 @@
 class View:
+    """Get view"""
     def choose_category(self, category):
         print("--------------- LISTE DES CATEGORIES ----------------------")
         tmp_values = {}
@@ -25,6 +26,7 @@ class View:
         return prod
 
     def intro(self):
+        print("--------------- MENU PRINCIPAL ----------------------")
         try:
             request = int(input(
                 "1 - Quel aliment souhaitez-vous remplacer ? \n"
@@ -39,11 +41,22 @@ class View:
             return self.intro()
 
     def substitue(self, lst):
-        for i in lst:
-            print(i)
+        print("--------------- ALIMENTS SUBSTITUTÉS ----------------------")
+        for index, name in enumerate(lst):
+            print(f"{index + 1} - {name}")
 
-    def product_views(self, product):
-        print(product)
+    def save_product(self, prod):
+        print("--------------- PRODUIT SUBSTITUTÉ ----------------------")
+        print(f"{prod}")
+        print("Que souhaitez-vous faire ?")
+        choice = input(
+            "oui - Sauvegarder le produit dans mes subsituts \n"
+            "non - Quitter le programme \n"
+            "Votre choix > ").lower()
+        if choice == "oui":
+            return True
+        return False
+
 
 
 
