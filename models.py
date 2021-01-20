@@ -81,6 +81,13 @@ class DbOpenFoodFacts:
     def get_all_substitute(self, lst):
         return [self.get_product_substitue(x[1]) for x in lst]
 
+    def delete_product_substitute(self, id):
+        self.cursor.execute("DELETE FROM Substitute WHERE substituteID = (%s)", (id,))
+        self.db.commit()
+
+    def delete_drop_table(self):
+        pass
+
 
 
 # TODO 1 : Importer la base de donnée et faire la suite

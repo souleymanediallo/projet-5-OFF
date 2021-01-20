@@ -100,6 +100,13 @@ class App:
             self.view.substitue(f_lst)
 
         elif value == 3:
+            lst = self.db.get_substitut()
+            f_lst = self.db.get_all_substitute(lst)
+            choice_product = self.view.choose_substitute(f_lst)
+            self.db.delete_product_substitute(lst[choice_product][0])
+            print(f"Le produit {f_lst[choice_product]} a été supprimé.")
+
+        elif value == 4:
             return exit(0)
 
         else:

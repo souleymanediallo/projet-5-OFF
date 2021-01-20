@@ -31,7 +31,8 @@ class View:
             request = int(input(
                 "1 - Quel aliment souhaitez-vous remplacer ? \n"
                 "2 - Retrouver mes aliments substitués \n"
-                "3 - Quitter le programme \n"
+                "3 - Supprimer un substitut \n"
+                "4 - Quitter le programme \n"
                 "Votre choix >  "
             ))
             if request not in (1, 2, 3):
@@ -58,6 +59,14 @@ class View:
         return False
 
 
-
-
+    def choose_substitute(self, lst):
+        print("--------------- LISTE ----------------------")
+        for i, p in enumerate(lst):
+            print(f"{i+1} - {p}")
+        try:
+            choice = int(input("Choisir le numéro de votre substitute : > "))
+        except (ValueError, IndexError):
+            print("La valeur choisie n'est pas la bonne")
+            return exit()
+        return choice - 1
 
