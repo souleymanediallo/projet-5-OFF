@@ -35,7 +35,7 @@ class View:
                 "4 - Quitter le programme \n"
                 "Votre choix >  "
             ))
-            if request not in (1, 2, 3):
+            if request not in (1, 2, 3, 4):
                 return self.intro()
             return request
         except ValueError:
@@ -57,7 +57,6 @@ class View:
         if choice == "oui":
             return True
         return False
-
 
     def choose_substitute(self, lst):
         print("--------------- LISTE ----------------------")

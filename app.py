@@ -73,12 +73,16 @@ class App:
         choice = int(input("Que souhaitez-vous faire ? \n"
                        "1 - Importer la base de donnée OFF  \n"
                        "2 - Menu Principal \n"
-                       "3 - Quitter le programme \n"
+                       "3 - Supprimer les données \n"
+                       "4 - Quitter le programme \n"
                        "Votre choix >  "))
         if choice == 1:
             self.process()
         elif choice == 2:
             pass
+        elif choice == 3:
+            self.db.delete_all_data_off()
+            self.import_db()
         else:
             return exit()
 
@@ -116,8 +120,6 @@ class App:
 def main():
     c = App()
     c.import_db()
-    # c.save_product(3153, "pizzas")
-    # c.process()
     while True:
         c.scenario()
 

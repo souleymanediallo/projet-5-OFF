@@ -85,8 +85,12 @@ class DbOpenFoodFacts:
         self.cursor.execute("DELETE FROM Substitute WHERE substituteID = (%s)", (id,))
         self.db.commit()
 
-    def delete_drop_table(self):
-        pass
+    def delete_all_data_off(self):
+        self.cursor.execute("DELETE FROM Substitute")
+        self.cursor.execute("DELETE FROM Product_has_Category")
+        self.cursor.execute("DELETE FROM Product")
+        self.cursor.execute("DELETE FROM Category")
+        self.db.commit()
 
 
 
