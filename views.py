@@ -1,5 +1,5 @@
 class View:
-    """Get view"""
+    """Get view product, category"""
     def choose_category(self, category):
         print("--------------- LISTE DES CATEGORIES ----------------------")
         tmp_values = {}

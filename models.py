@@ -2,7 +2,9 @@ import mysql.connector
 
 
 class DbOpenFoodFacts:
-    """Connect db local"""
+    """
+    Connect db local, save category, save product
+    """
     CATEGORY_SIZE = 11
     PRODUCT_SIZE = 51
 
